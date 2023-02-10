@@ -1,0 +1,14 @@
+docker volume create db_data
+
+docker network create mysqlnet
+
+docker run --name mysql -e MYSQL_ROOT_PASSWORD=test -e MYSQL_DATABASE=wordpress -e MYSQL_USER=wordpress -e MYSQL_PASSWORD=wordpress -v db_data:/var/lib/mysql --net=mysqlnet -d mysql
+
+docker run --name test-wordpress -e WORDPRESS_DB_HOST=mysql:3306 -e WORDPRESS_DB_USER=wordpress -e WORDPRESS_DB_PASSWORD=wordpress -e WORDPRESS_DB_NAME=wordpress --net=mysqlnet -p 8081:80 -d wordpress
+
+
+
+
+docker run -d -v D:\YNOV_M2\Docker\mysql\data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=test mysql
+
+docker run --name phpmyadmin -d --link brave_hoover:db -p 8080:80 phpmyadmin

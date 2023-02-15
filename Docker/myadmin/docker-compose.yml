@@ -3,11 +3,47 @@ version: '3.9'
 networks:
   backend:
     name: network-back
+  front:
+    name: network-front
 
 services:
-  image: mysql:latest
-  environment:
-    MYSQL_ROOT_PASSWORD: test
-    MYSQL_DATABASE: testdb
-  networks:
-    - backend
+  database:
+    container_name: mysql-cont
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER_NAME}
+      MYSQL_PASSWORD: ${DB_USER_PASSWORD}
+    networks:
+      - backend
+      - front
+    volumes:
+      - D:\YNOV_M2\Docker\mysql\data:/var/lib/mysql
+  phpmyadmin:
+    container_name: admin-cont
+    image: phpmyadmin:latest
+    ports:
+      - 8080:80
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      PMA_HOST: database
+    networks:
+      - backend
+    depends_on:
+      - database
+  wordpress:
+    container_name: word-cont
+    image: wordpress:latest
+    ports:
+      - 8081:80
+    environment:
+      WORDPRESS_DB_HOST: database
+      WORDPRESS_DB_USER: ${DB_USER_NAME}
+      WORDPRESS_DB_PASSWORD: ${DB_USER_PASSWORD}
+      WORDPRESS_DB_NAME: ${DB_NAME}
+    networks:
+      - front
+    depends_on:
+      - database
+    restart: on-failure

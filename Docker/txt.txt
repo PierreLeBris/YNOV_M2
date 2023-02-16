@@ -18,4 +18,6 @@ docker run --name phpmyadmin -d --link brave_hoover:db -p 8080:80 phpmyadmin
 
 WORDPRESS_DB_HOST=mysql:3306 -e WORDPRESS_DB_USER=wordpress -e WORDPRESS_DB_PASSWORD=wordpress -e WORDPRESS_DB_NAME=wordpress
 
-docker run -d -p 80:80 -p 443:443 --name base -v $(pwd)/app:/app mcr.microsoft.com/dotnet/core/aspnet:2.1-stretch-slim
+docker run -d -p 80:80 -p 443:443 --name base -v D:\GitHub\YNOV_M2\Docker\Project\app:/app base
+
+docker run -d --name build -v D:\GitHub\YNOV_M2\Docker\Project\src:/src build

@@ -26,6 +26,6 @@ FROM base AS final
 
 WORKDIR /app
 
-COPY /app /app/publish/identity.api.dll
+COPY --from=publish /app/publish/ .
 
 RUN dotnet identity.api.dll

@@ -1,0 +1,21 @@
+version: '3.9'
+
+networks:
+  mssql:
+  rabbitmq:
+  redis:
+  web:
+
+services:
+  database:
+    container_name: mssql_cont
+    build:
+      context: database
+      dockerfile: ./Dockerfile.databasee
+  applicant:
+    container_name: appl
+
+    
+    build:
+      context: database
+      dockerfile: ./Dockerfile.databasee

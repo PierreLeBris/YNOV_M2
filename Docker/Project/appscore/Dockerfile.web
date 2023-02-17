@@ -26,6 +26,6 @@ FROM base AS final
 
 WORKDIR /app
 
-COPY /app /app/publish/Web.csproj.dll
+COPY --from=publish /app/publish/ .
 
 RUN dotnet Web.dll

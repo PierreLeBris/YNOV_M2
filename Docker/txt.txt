@@ -10,15 +10,14 @@ docker run --name test-wordpress -e WORDPRESS_DB_HOST=mysql:3306 -e WORDPRESS_DB
 
 
 
-docker run -d -v D:\YNOV_M2\Docker\mysql\data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=test mysql
 
-docker run -p 1433 -d -v D:\GitHub\YNOV_M2\Docker\Project\Database\data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=test mysql
+docker run -d -v D:\YNOV_M2\Docker\mysql\data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=test mysql
 
 docker run --name phpmyadmin -d --link brave_hoover:db -p 8080:80 phpmyadmin
 
 
 WORDPRESS_DB_HOST=mysql:3306 -e WORDPRESS_DB_USER=wordpress -e WORDPRESS_DB_PASSWORD=wordpress -e WORDPRESS_DB_NAME=wordpress
 
-docker run -d -p 80:80 -p 443:443 --name base -v D:\GitHub\YNOV_M2\Docker\Project\app:/app base
+docker run -d -p 80:80 -p 443:443 --name base -v D:\YNOV_M2\Docker\Project\app:/app base
 
-docker run -d --name build -v D:\GitHub\YNOV_M2\Docker\Project\src:/src build
+docker run -d --name build -v D:\YNOV_M2\Docker\Project\src:/src build

@@ -1,0 +1,31 @@
+#BASE : 
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.1-stretch-slim AS base
+
+WORKDIR /app
+
+EXPOSE 80
+EXPOSE 443
+
+#BUILD : 
+FROM mcr.microsoft.com/dotnet/core/sdk:2.1-stretch AS build
+
+WORKDIR /src
+
+COPY D:\YNOV_M2\Docker\Project\appscore\Services\Applicant.api /src/Services/Applicant.api/
+COPY D:\YNOV_M2\Docker\Project\appscore\Foundation\Events /src/Foundation/Events/
+
+RUN dotnet restore /src/Services/Applicant.api/applicant.api.csproj 
+RUN dotnet build /src/Services/Applicant.api/applicant.api.csproj -c Release -o /app/build
+
+#PUBLISH :
+FROM build AS publish
+RUN dotnet /src/Services/Applicant.api/applicant.api.csproj -c Release -o /app/publish
+
+#FINAL : 
+FROM base AS final
+
+WORKDIR /app
+
+COPY /app /app/publish/applicant.api.dll
+
+RUN dotnet applicant.api.dll

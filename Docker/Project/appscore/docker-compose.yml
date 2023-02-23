@@ -37,7 +37,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-  applicant.api:
+  service-applicant-api:
     build:
       context: .
       dockerfile: Dockerfile.applicant
@@ -55,7 +55,7 @@ services:
       rabbitmq:
         condition: service_healthy
 
-  jobs.api:
+  service-jobs-api:
     build:
       context: .
       dockerfile: Dockerfile.jobs
@@ -72,7 +72,7 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-  identity.api:
+  service-identity-api:
     build:
       context: .
       dockerfile: Dockerfile.identity
@@ -101,7 +101,7 @@ services:
       - database
       - user.data
       - rabbitmq
-      - applicant.api
-      - identity.api
-      - jobs.api
+      - service-applicant-api
+      - service-identity-api
+      - service-jobs-api
     restart: always

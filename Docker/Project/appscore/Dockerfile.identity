@@ -1,8 +1,8 @@
 #BASE : 
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.1-stretch-slim AS base
+LABEL author=pierrelebris
 LABEL name=identity
 WORKDIR /app
-
 EXPOSE 80
 EXPOSE 443
 
@@ -11,15 +11,16 @@ FROM mcr.microsoft.com/dotnet/core/sdk:2.1-stretch AS build
 
 WORKDIR /src
 
-COPY /Services/Identity.api /src/Services/Identity.api/
-COPY /Foundation/Events /src/Foundation/Events/
+COPY ./Services ./Services
+COPY ./Foundation/Events ./Foundation/Events
 
-RUN dotnet restore /src/Services/Identity.api/identity.api.csproj 
-RUN dotnet build /src/Services/Identity.api/identity.api.csproj -c Release -o /app/build
+RUN dotnet restore Services/Identity.Api/Identity.Api.csproj 
+COPY . .
+RUN dotnet build Services/Identity.Api/Identity.Api.csproj -c Release -o /app/build
 
 #PUBLISH :
 FROM build AS publish
-RUN dotnet /src/Services/Identity.api/identity.api.csproj -c Release -o /app/publish
+RUN dotnet publish Services/Identity.Api/Identity.Api.csproj -c Release -o /app/publish
 
 #FINAL : 
 FROM base AS final
@@ -28,4 +29,4 @@ WORKDIR /app
 
 COPY --from=publish /app/publish/ .
 
-ENTRYPOINT [ "dotnet", "/app/identity.api.dll" ]
+ENTRYPOINT [ "dotnet", "/app/Identity.Api.dll" ]

@@ -1,6 +1,6 @@
 #BASE : 
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.1-stretch-slim AS base
-
+LABEL name="applicants"
 WORKDIR /app
 
 EXPOSE 80
@@ -11,8 +11,8 @@ FROM mcr.microsoft.com/dotnet/core/sdk:2.1-stretch AS build
 
 WORKDIR /src
 
-COPY D:\YNOV_M2\Docker\Project\appscore\Services\Applicant.api /src/Services/Applicant.api/
-COPY D:\YNOV_M2\Docker\Project\appscore\Foundation\Events /src/Foundation/Events/
+COPY /Services/Applicant.api /src/Services/Applicant.api/
+COPY /Foundation/Events /src/Foundation/Events/
 
 RUN dotnet restore /src/Services/Applicant.api/applicant.api.csproj 
 RUN dotnet build /src/Services/Applicant.api/applicant.api.csproj -c Release -o /app/build
@@ -28,4 +28,4 @@ WORKDIR /app
 
 COPY --from=publish /app/publish/ .
 
-RUN dotnet applicant.api.dll
+ENTRYPOINT [ "dotnet", "/app/applicant.api.dll" ]

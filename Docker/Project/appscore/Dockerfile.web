@@ -1,6 +1,6 @@
 #BASE : 
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.1-stretch-slim AS base
-
+LABEL name=web
 WORKDIR /app
 
 EXPOSE 80
@@ -11,8 +11,8 @@ FROM mcr.microsoft.com/dotnet/core/sdk:2.1-stretch AS build
 
 WORKDIR /src
 
-COPY D:\YNOV_M2\Docker\Project\appscore\Web\Web.csproj /src/Web/
-COPY D:\YNOV_M2\Docker\Project\appscore\Foundation\Http /src/Foundation/Http/
+COPY /Web/Web.csproj /src/Web/
+COPY /Foundation/Http /src/Foundation/Http/
 
 RUN dotnet restore /src/Web/Web.csproj.csproj 
 RUN dotnet build /src/Web/Web.csproj.csproj -c Release -o /app/build
@@ -28,4 +28,4 @@ WORKDIR /app
 
 COPY --from=publish /app/publish/ .
 
-RUN dotnet Web.dll
+ENTRYPOINT [ "dotnet", "/app/Web.dll" ]

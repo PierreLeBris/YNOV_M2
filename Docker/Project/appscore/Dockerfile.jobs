@@ -1,6 +1,6 @@
 #BASE : 
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.1-stretch-slim AS base
-
+LABEL name=jobs
 WORKDIR /app
 
 EXPOSE 80
@@ -11,8 +11,8 @@ FROM mcr.microsoft.com/dotnet/core/sdk:2.1-stretch AS build
 
 WORKDIR /src
 
-COPY D:\YNOV_M2\Docker\Project\appscore\Services\Jobs.api /src/Services/Jobs.api/
-COPY D:\YNOV_M2\Docker\Project\appscore\Foundation\Events /src/Foundation/Events/
+COPY /Services/Jobs.api /src/Services/Jobs.api/
+COPY /Foundation/Events /src/Foundation/Events/
 
 RUN dotnet restore /src/Services/Jobs.api/jobs.api.csproj 
 RUN dotnet build /src/Services/Jobs.api/jobs.api.csproj -c Release -o /app/build
@@ -28,4 +28,4 @@ WORKDIR /app
 
 COPY --from=publish /app/publish/ .
 
-RUN dotnet jobs.api.dll
+ENTRYPOINT [ "dotnet", "/app/jobs.api.dll" ]

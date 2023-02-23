@@ -1,27 +1,107 @@
 version: '3.9'
 networks:
-  mssql:
-  rabbitmq:
-  redis:
-  web:
+  mssql-net:
+  rabbitmq-net:
+  redis-net:
+  web-net:
+volumes:
+  mssql-vol:
 services:
   database:
-    container_name: mssql_cont
     build:
-      context: database
-      dockerfile: /Dockerfile.databasee
-  applicant:
-    container_name: applicant_cont
+      context: Database
+      dockerfile: Dockerfile
+    volumes:
+      - mssql-vol:/var/opt/mssql
+    networks:
+      mssql-net:
+    restart: always
+  user.data:
+    image: redis
+    ports:
+      - 6379:6379
+    networks:
+      redis-net:
+    restart: always
+    depends_on:
+      - database
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+      - 5672:5672
+    networks:
+      rabbitmq-net:
+    healthcheck:
+      test: ["CMD", "rabbitmq", "status"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+  applicant.api:
     build:
-      context: applicant
-      dockerfile: /Dockerfile.applicant
-  identity:
-    container_name: idendity_cont
+      context: .
+      dockerfile: Dockerfile.applicant
+    ports:
+      - 8081:80
+    environment:
+      - ConnectionString=Server=localhost;User=sa;Password=Pass@word;Database=dotnetgigs.applicant;
+      - HostRabbitmq=rabbitmq
+    networks:
+      mssql-net:
+      rabbitmq-net:
+      redis-net:
+      web-net:
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  jobs.api:
     build:
-      context: applicant
-      dockerfile: /Dockerfile.identity
+      context: .
+      dockerfile: Dockerfile.jobs
+    ports:
+      - 8083:80
+    environment:
+      - ConnectionString=Server=localhost;User=sa;Password=Pass@word;Database=dotnetgigs.jobs;
+      - HostRabbitmq=rabbitmq
+    networks:
+      mssql-net:
+      rabbitmq-net:
+      redis-net:
+      web-net:
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+  identity.api:
+    build:
+      context: .
+      dockerfile: Dockerfile.identity
+    ports:
+      - 8084:80
+    environment:
+      - ConnectionString=Server=localhost;User=sa;Password=Pass@word;Database=dotnetgigs.identity;
+      - HostRabbitmq=rabbitmq
+    networks:
+      mssql-net:
+      rabbitmq-net:
+      redis-net:
+      web-net:
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
   web:
-    container_name: web
     build:
-      context: applicant
-      dockerfile: /Dockerfile.web
+      context: .
+      dockerfile: Dockerfile.web
+    ports:
+      - 8080:80
+    networks:
+      web-net:
+    depends_on:
+      - database
+      - user.data
+      - rabbitmq
+      - applicant.api
+      - identity.api
+      - jobs.api
+    restart: always

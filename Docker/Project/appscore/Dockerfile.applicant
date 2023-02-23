@@ -1,6 +1,6 @@
 #BASE : 
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.1-stretch-slim AS base
-LABEL name="applicants"
+LABEL name=applicants
 WORKDIR /app
 
 EXPOSE 80

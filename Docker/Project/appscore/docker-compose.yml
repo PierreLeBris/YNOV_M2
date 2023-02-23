@@ -45,10 +45,10 @@ services:
         condition: service_started
   applicant.api:
     container_name: service-applicants-api
-    build:
-      context: .
-      dockerfile: Dockerfile.applicant
-    #image: pierrelebris/applicant.api:latest
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile.applicant
+    image: pierrelebris/applicant.api:latest
     ports:
       - 8081:80
     environment:
@@ -58,16 +58,17 @@ services:
       - mssql-net
       - rabbitmq-net
       - web-net
+    restart: always
     depends_on:
       rabbitmq:
         condition: service_healthy
 
   jobs.api:
     container_name: service-jobs-api
-    build:
-      context: .
-      dockerfile: Dockerfile.jobs
-    #image: pierrelebris/jobs.api:latest
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile.jobs
+    image: pierrelebris/jobs.api:latest
     ports:
       - 8083:80
     environment:
@@ -77,6 +78,7 @@ services:
       - mssql-net
       - rabbitmq-net
       - web-net
+    restart: always
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -84,10 +86,10 @@ services:
         condition: service_started
   identity.api:
     container_name: service-identity-api
-    build:
-      context: .
-      dockerfile: Dockerfile.identity
-    #image: pierrelebris/identity.api:latest
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile.identity
+    image: pierrelebris/identity.api:latest
     ports:
       - 8084:80
     environment:
@@ -97,12 +99,12 @@ services:
       - rabbitmq-net
       - redis-net
       - web-net
+    restart: always
     depends_on:
       rabbitmq:
         condition: service_healthy
       sql.data:
         condition: service_started
-
   web:
     container_name: web
     build:

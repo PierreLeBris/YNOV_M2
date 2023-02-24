@@ -1,0 +1,3 @@
+Exercice 1 :Un serveur web qui quand il est appelé répond "Hello World"
+Exercice 2 :Un serveur web qui quand il est appelé répond le host et la méthode de la requête qui l'a appelé
+Exercice 3 :Un serveur web qui quand on l'appelle avec une méthode POST renvoie le body de la requête

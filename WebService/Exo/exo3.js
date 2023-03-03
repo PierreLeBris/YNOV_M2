@@ -1,26 +1,20 @@
-const http = require('http');
+var http = require('http');
 
-const hostname = '127.0.0.1';
-const port = 3000;
+var server = http.createServer(function(req, resp){
+    if(req.method == "POST"){
+        resp.writeHead(200, {'Content-type': 'text/plain'});
+        var body = '';
+        req.on('data', function(data){
+            body += data.toString();
+        });
+        req.on('end', function(){
+            resp.end(body);
+        });
+    }else if(req.method == 'GET'){
+        resp.writeHead(404, {'Content-type': 'text/plain'});
+        resp.end("Not Found");
+    }
+    
+})
 
-const server = http.createServer((req, res) => {
-  if (req.method === 'POST') {
-    let body = '';
-    req.on('data', (chunk) => {
-      body += chunk.toString();
-    });
-    req.on('end', () => {
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'text/plain');
-      res.end(`Received body: ${body}\n`);
-    });
-  } else {
-    res.statusCode = 405;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Method not allowed\n');
-  }
-});
-
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+server.listen(8000);

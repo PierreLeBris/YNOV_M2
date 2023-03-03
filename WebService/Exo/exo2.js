@@ -1,16 +1,11 @@
-const http = require('http');
+var http = require('http');
 
-const hostname = '127.0.0.1';
-const port = 3000;
+var server = http.createServer(function(req, resp){
+    resp.writeHead(200, {'Content-type': 'application/json'});
+    var response = {};
+    response.host = req.headers.host;
+    response.method = req.method;
+    resp.end(JSON.stringify(response));
+})
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.write(`Host: ${req.headers.host}\n`);
-  res.write(`Method: ${req.method}\n`);
-  res.end();
-});
-
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+server.listen(8000);

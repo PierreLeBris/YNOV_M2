@@ -1,0 +1,6 @@
+Exercice 1 :Un serveur web qui quand il est appelé répond "Hello World"
+Exercice 2 :Un serveur web qui quand il est appelé répond le host et la méthode de la requête qui l'a appelé
+Exercice 3 :Un serveur web qui quand on l'appelle avec une méthode POST renvoie le body de la requête
+Exercice 4 : Créer un mécanisme de boite aux lettres
+- Sur un POST pour un chemin donné, sauvegarder dans une variable associée à ce chemin le body du message 
+- Sur un GET pour un chemin donné, retourner l'intégralité des messages sauvegardés pour ce chemin et supprimer ce contenu du serveur

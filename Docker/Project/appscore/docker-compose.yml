@@ -25,8 +25,6 @@ services:
     networks:
       - redis-net
     restart: always
-    depends_on:
-      - sql.data
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:3-management
@@ -40,9 +38,6 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-    depends_on:
-      sql.data:
-        condition: service_started
   applicant.api:
     container_name: service-applicants-api
     # build:
@@ -117,9 +112,6 @@ services:
     networks:
     - web-net
     depends_on:
-      - sql.data
-      - user.data
-      - rabbitmq
       - applicant.api
       - identity.api
       - jobs.api

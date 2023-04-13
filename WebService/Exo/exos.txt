@@ -4,3 +4,43 @@ Exercice 3 :Un serveur web qui quand on l'appelle avec une méthode POST renvoie
 Exercice 4 : Créer un mécanisme de boite aux lettres
 - Sur un POST pour un chemin donné, sauvegarder dans une variable associée à ce chemin le body du message 
 - Sur un GET pour un chemin donné, retourner l'intégralité des messages sauvegardés pour ce chemin et supprimer ce contenu du serveur
+
+Exercice 7 Donjon :{"presentation":"Merci de venir explorer mon API (donjon) presque totalement RESTful.\n
+\nLe jeu est simple, vous naviguez dans le donjon pour trouver les 7 trésors qui y sont cachés.\n
+\nBonne exploration","carte":["/inscription","/reset","/escalier","/coffre","/1"]} 
+
+/coffre = 
+{
+    "text": "le mot de passer est le nom de l'inventeur de REST",
+    "message": "6d6cc50e4ff16c20cbed53036f87a59587715f205180989111288751"
+}
+
+trésor
+
+/tresor : trésor
+
+/1 = trésor
+
+/escalier : port 8000
+
+2ème étage :
+{"presentation":"Vous êtes au deuxième étage, n'oubliez pas d'aller vous enregistrer afin de récupérer la clé de cet étage","carte":["/inscription","/reset","/escalier","/vieux","/note","/couloir"]}
+
+/note : Sachant que le donjon est une API REST, il y a un trésor caché à la vue de tous au premier étage
+
+/vieux : 
+{
+    "descripton": "Un mysterieux vieux vous dit que si vous lui enovyez la réponse à sa question il vous donnera un trésor",
+    "question": "En un mot, quelle est la notion de HTTP qui différencie la méthode POST et PUT"
+}
+
+trésorX2 : POST
+
+/couloir/1 : trésor
+
+/escalier : port 7259
+
+3ème étage : 
+{"presentation":"Vous êtes au troisième étage, n'oubliez pas d'aller vous enregistrer afin de récupérer la clé de cet étage","carte":["/inscription","/reset","/dragon"]}
+
+/dragon : trésor
